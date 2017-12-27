@@ -47,6 +47,7 @@ class PacemakerAPI {
   fun getActivity(id: String): Activity? {
     return activitiesIndex[id]
   }
+	
 
   fun deleteActivities(id: String) {
     require(userIndex[id] != null)

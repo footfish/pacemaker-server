@@ -34,6 +34,8 @@ class PacemakerRestService  {
     }
   }
 
+	
+	
   fun getActivities(ctx: Context) {
     val id: String? =  ctx.param("id")
     val user = pacemaker.getUser(id!!)
@@ -44,6 +46,18 @@ class PacemakerRestService  {
     }
   }
 
+  fun getActivitiesType(ctx: Context) {
+    val id: String? =  ctx.param("id")
+	  val type: String? =  ctx.param("type")
+    val user = pacemaker.getUser(id!!)
+    if (user != null) {
+      ctx.json(user.activities.values.filter { it.type == type })
+    } else {
+      ctx.status(404)
+    }
+  }
+	
+	
    fun createActivity(ctx: Context) {
     val id: String? =  ctx.param("id")
     val user = pacemaker.getUser(id!!)
