@@ -77,7 +77,8 @@ class PacemakerRestService  {
 		       if (friendEmail != null) {
 		         val friendUser = pacemaker.getUserByEmail(friendEmail)
 		             if (friendUser != null) {
-		                 if (friendUser != user) { // can't add yourself as friend 
+		                 if (friendUser != user) { // can't add yourself as friend
+//note: could check if already following 
 		                   user.friend.add(friendUser.id) //add friend 
 		                   friendUser.friend.add(id) //then add mutual relationship  
 		                   ctx.status(204)
