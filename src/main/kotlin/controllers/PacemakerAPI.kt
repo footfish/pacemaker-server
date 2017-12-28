@@ -48,6 +48,19 @@ class PacemakerAPI {
     return activitiesIndex[id]
   }
 	
+	fun getFriends(id:String): MutableCollection<User?>? {
+	val friendIndex = hashMapOf<String, User?>()
+		if(userIndex[id] != null) {
+		  for (i in userIndex[id]?.friend!!) {
+		    friendIndex[i] = userIndex[i]
+		        friendIndex[i]?.password = "*****" //obfiscate password
+		  }
+			return friendIndex.values
+		} else {
+			  return null
+		}
+	}
+	
 
   fun deleteActivities(id: String) {
     require(userIndex[id] != null)

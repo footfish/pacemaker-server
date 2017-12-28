@@ -8,5 +8,5 @@ data class User(
     var email: String = "",
     var password: String = "",
     val id: String = UUID.randomUUID().toString(),
-	  var friend: MutableList<String> = ArrayList(),
+	  var friend: MutableSet<String> = mutableSetOf(),
     val activities: MutableMap<String, Activity> = hashMapOf<String, Activity>())
