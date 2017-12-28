@@ -35,8 +35,7 @@ class PacemakerRestService  {
   }
 
 	
-	
-  fun getActivities(ctx: Context) {
+	  fun getActivities(ctx: Context) {
     val id: String? =  ctx.param("id")
     val user = pacemaker.getUser(id!!)
     if (user != null) {
@@ -69,6 +68,33 @@ class PacemakerRestService  {
       ctx.status(404)
     }
   }
+	
+	fun createFriend(ctx: Context) {
+    val id: String? =  ctx.param("id")
+    val user = pacemaker.getUser(id!!)
+    if (user != null) {
+		   val friendEmail = ctx.param("email")
+		       if (friendEmail != null) {
+		         val friendUser = pacemaker.getUserByEmail(friendEmail)
+		             if (friendUser != null) {
+		                 if (friendUser != user) { // can't add yourself as friend 
+		                   user.friend.add(friendUser.id) //add friend 
+		                   friendUser.friend.add(id) //then add mutual relationship  
+		                   ctx.status(204)
+		                 } else {
+		                 ctx.status(422) //HTTP_422_UNPROCESSABLE_ENTITY
+		                 }
+		             } else {
+		               ctx.status(404)
+		             }
+		         } else {
+		         ctx.status(404)
+				   	 }
+	  } else {
+    ctx.status(404)
+    } 
+  }
+  
   
   fun deleteActivites(ctx: Context) {
     val id: String? =  ctx.param("id")
