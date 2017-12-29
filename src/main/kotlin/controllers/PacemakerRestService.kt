@@ -4,6 +4,7 @@ import io.javalin.Context
 import models.Activity
 import models.Location
 import models.User
+import java.net.URLDecoder
 
 class PacemakerRestService  {
   val pacemaker = PacemakerAPI()
@@ -69,31 +70,29 @@ class PacemakerRestService  {
     }
   }
 	
-	fun createFriend(ctx: Context) {
-    val id: String? =  ctx.param("id")
-    val user = pacemaker.getUser(id!!)
-    if (user != null) {
-		   val friendEmail = ctx.param("email")
-		       if (friendEmail != null) {
-		         val friendUser = pacemaker.getUserByEmail(friendEmail)
-		             if (friendUser != null) {
-		                 if (friendUser != user) { // can't add yourself as friend
-		                   user.friend.add(friendUser.id) //add friend 
-		                   friendUser.friend.add(id) //then add mutual relationship  
-		                   ctx.status(204)
-		                 } else {
-		                 ctx.status(422) //HTTP_422_UNPROCESSABLE_ENTITY
-		                 }
-		             } else {
-		               ctx.status(404)
-		             }
-		         } else {
-		         ctx.status(404)
-				   	 }
-	  } else {
-    ctx.status(404)
-    } 
-  }
+   fun createFriend(ctx: Context) {
+         val id: String? =  ctx.param("id")
+         val friendEmail = URLDecoder.decode(ctx.param("email"),"UTF-8")
+         if (id != null && friendEmail != null) {
+           pacemaker.createFriend(id, friendEmail)
+			     ctx.status(204)
+         } else {
+			   ctx.status(404)
+         }
+   }
+		
+   fun deleteFriend(ctx: Context) {
+         val id: String? =  ctx.param("id")
+         val friendEmail = URLDecoder.decode(ctx.param("email"),"UTF-8")
+	   
+         if (id != null && friendEmail != null) {
+           pacemaker.deleteFriend(id, friendEmail)
+			     ctx.status(204)
+         } else {
+			   ctx.status(404)
+         }
+   }
+    
   
 	 fun getFriends(ctx: Context) {
     val id: String? =  ctx.param("id")

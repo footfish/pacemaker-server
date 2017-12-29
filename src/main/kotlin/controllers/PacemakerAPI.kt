@@ -48,6 +48,9 @@ class PacemakerAPI {
     return activitiesIndex[id]
   }
 	
+	
+	
+	
 	fun getFriends(id:String): MutableCollection<User?>? {
 	val friendIndex = hashMapOf<String, User?>()
 		if(userIndex[id] != null) {
@@ -61,7 +64,26 @@ class PacemakerAPI {
 		}
 	}
 	
-
+  fun createFriend(id: String, email: String) {
+			val friendUser = emailIndex[email]
+			val user = userIndex[id]
+			if (user != null && friendUser != null ) {
+				if (friendUser != user) { // can't add yourself as friend
+				  user.friend.add(friendUser.id)     //add friend 
+				  friendUser.friend.add(user.id)     //then add mutual relationship
+				}  
+			}	
+  }	
+ 	
+  fun deleteFriend(id: String, email: String) {
+			val friendUser = emailIndex[email]
+			val user = userIndex[id]
+			if (user != null && friendUser != null ) {
+			  user.friend.remove(friendUser.id)     //remove friend 
+			  friendUser.friend.remove(user.id)     //then remove mutual relationship  
+			}	
+  }
+	
   fun deleteActivities(id: String) {
     require(userIndex[id] != null)
     var user = userIndex.get(id)
