@@ -4,6 +4,7 @@ import io.javalin.Context
 import models.Activity
 import models.Location
 import models.User
+import models.Message
 import java.net.URLDecoder
 
 class PacemakerRestService  {
@@ -121,7 +122,6 @@ class PacemakerRestService  {
   }
 	
 	 fun createLocation(ctx: Context) {
-		println("creating location")
 		val location = ctx.bodyAsClass(Location::class.java)
 		println(location)
     val activityId: String? = ctx.param("activityId")
@@ -136,5 +136,17 @@ class PacemakerRestService  {
       ctx.status(404)
     }
   }
+	
+fun sendMessage(ctx: Context) {
+    val id: String? =  ctx.param("id")
+    val friendEmail = URLDecoder.decode(ctx.param("email"),"UTF-8")
+	  val message = ctx.bodyAsClass(Message::class.java)
+    if (id != null && friendEmail != null) {
+	    pacemaker.sendMessage(id, friendEmail, message)
+		  ctx.status(204)
+		} else {
+      ctx.status(404)
+    }
+  }	
 	
 }

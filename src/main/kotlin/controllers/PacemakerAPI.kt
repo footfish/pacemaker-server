@@ -4,6 +4,7 @@ import java.util.UUID;
 import models.Activity
 import models.Location
 import models.User
+import models.Message
 
 class PacemakerAPI {
 
@@ -94,8 +95,6 @@ class PacemakerAPI {
 		  return null
 	  }	
   
- 	
-	
   fun deleteActivities(id: String) {
     require(userIndex[id] != null)
     var user = userIndex.get(id)
@@ -106,4 +105,14 @@ class PacemakerAPI {
       user.activities.clear();
     }
   }
+	
+  fun sendMessage(id: String, email: String, message: Message) {
+			val friendUser = emailIndex[email]
+			val user = userIndex[id]
+ 			if (user != null && friendUser != null ) {
+			  if (user.friend.contains(friendUser.id) ) { // check they are friends 
+				    friendUser.messages[message.id]=message
+				}  
+			}
+}	  	
 }
