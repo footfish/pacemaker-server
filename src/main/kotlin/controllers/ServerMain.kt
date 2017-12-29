@@ -31,6 +31,7 @@ fun configRoutes(app: Javalin, service: PacemakerRestService) {
 	app.get("/users/:id/friends/") { ctx -> service.getFriends(ctx) }
 	app.get("/users/:id/friends/:email/activities") { ctx -> service.getFriendActivities(ctx) }
 	app.post("/users/:id/messages/:email") { ctx -> service.sendMessage(ctx) }
-	app.get("/users/:id/messages/") { ctx -> service.getMessages(ctx) }	
+	app.get("/users/:id/messages/") { ctx -> service.getMessages(ctx) }
+	app.post("/users/:id/messages/") { ctx -> service.broadcastMessage(ctx) }	
 	app.after { ctx -> println("Response: " + ctx.resultString())  } // debug
 }

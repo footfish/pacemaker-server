@@ -159,4 +159,15 @@ fun getMessages(ctx: Context) {
     }
   }
 	
+fun broadcastMessage(ctx: Context) {
+    val id: String? =  ctx.param("id")
+	  val message = ctx.bodyAsClass(Message::class.java)
+    if (id != null) {
+	    pacemaker.broadcastMessage(id, message)
+		  ctx.status(204)
+		} else {
+      ctx.status(404)
+    }
+  }	
+	
 }

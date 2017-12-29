@@ -114,5 +114,18 @@ class PacemakerAPI {
 				    friendUser.messages[message.id]=message
 				}  
 			}
-}	  	
+  }
+	
+  fun broadcastMessage(id: String, message: Message) {
+			val user = userIndex[id]
+ 			if (user != null) {
+				  for (i in userIndex[id]?.friend!!) {
+					   val friendUser = userIndex[i]
+					   if (friendUser != null) { //in case user was deleted 
+					   friendUser.messages[message.id]=message
+					   }
+				  }
+			}	
+  }	  	
+		  	
 }
