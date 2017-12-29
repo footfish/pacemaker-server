@@ -148,5 +148,15 @@ fun sendMessage(ctx: Context) {
       ctx.status(404)
     }
   }	
+
+fun getMessages(ctx: Context) {
+    val id: String? =  ctx.param("id")
+    val user = pacemaker.getUser(id!!)
+    if (user != null) {
+      ctx.json(user.messages.values)
+    } else {
+      ctx.status(404)
+    }
+  }
 	
 }
