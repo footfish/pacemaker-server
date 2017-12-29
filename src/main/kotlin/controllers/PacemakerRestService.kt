@@ -104,10 +104,19 @@ class PacemakerRestService  {
     }
   }
 	
+  fun getFriendActivities(ctx: Context) {
+    val id: String? =  ctx.param("id")
+    val friendEmail = URLDecoder.decode(ctx.param("email"),"UTF-8")
+    if (id != null && friendEmail != null) {
+	    ctx.json(pacemaker.getFriendActivities(id, friendEmail)!!)
+		} else {
+      ctx.status(404)
+    }
+  }	
   
   fun deleteActivites(ctx: Context) {
     val id: String? =  ctx.param("id")
-    pacemaker.deleteActivities(id!!);
+    pacemaker.deleteActivities(id!!)
     ctx.status(204)
   }
 	

@@ -56,7 +56,6 @@ class PacemakerAPI {
 		if(userIndex[id] != null) {
 		  for (i in userIndex[id]?.friend!!) {
 		    friendIndex[i] = userIndex[i]
-		        friendIndex[i]?.password = "*****" //obfiscate password
 		  }
 			return friendIndex.values
 		} else {
@@ -83,6 +82,19 @@ class PacemakerAPI {
 			  friendUser.friend.remove(user.id)     //then remove mutual relationship  
 			}	
   }
+	
+	  fun getFriendActivities(id: String, email: String): MutableCollection<Activity>? {
+			val friendUser = emailIndex[email]
+			val user = userIndex[id]
+			if (user != null && friendUser != null ) {
+			  if (user.friend.contains(friendUser.id) ) { // check they are friends 
+				  return friendUser.activities.values
+				}  
+			}
+		  return null
+	  }	
+  
+ 	
 	
   fun deleteActivities(id: String) {
     require(userIndex[id] != null)
