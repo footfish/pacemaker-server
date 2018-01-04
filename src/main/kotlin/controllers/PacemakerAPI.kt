@@ -73,13 +73,15 @@ class PacemakerAPI {
 	  return false
   }	
  	
-  fun deleteFriend(id: String, email: String) {
+  fun deleteFriend(id: String, email: String): Boolean {
 			val friendUser = emailIndex[email]
 			val user = userIndex[id]
 			if (user != null && friendUser != null ) {
 			  user.friend.remove(friendUser.id)     //remove friend 
-			  friendUser.friend.remove(user.id)     //then remove mutual relationship  
-			}	
+			  friendUser.friend.remove(user.id)     //then remove mutual relationship
+				return true  
+			}
+	  return false
   }
 	
 	  fun getFriendActivities(id: String, email: String): MutableCollection<Activity>? {

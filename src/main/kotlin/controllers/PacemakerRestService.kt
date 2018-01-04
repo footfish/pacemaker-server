@@ -83,8 +83,11 @@ class PacemakerRestService  {
          val friendEmail = URLDecoder.decode(ctx.param("email"),"UTF-8")
 	   
          if (id != null && friendEmail != null) {
-           pacemaker.deleteFriend(id, friendEmail)
-			     ctx.status(204)
+           if(pacemaker.deleteFriend(id, friendEmail)) {
+             ctx.status(204)
+					 } else {
+			     ctx.status(404)
+					}
          } else {
 			   ctx.status(404)
          }
