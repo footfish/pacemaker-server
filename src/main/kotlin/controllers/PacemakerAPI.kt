@@ -96,7 +96,7 @@ class PacemakerAPI {
 	  }	
   
 	
-  fun deleteActivities(id: String) {
+  fun deleteActivities(id: String): Boolean {
     require(userIndex[id] != null)
     var user = userIndex.get(id)
     if (user != null) {
@@ -104,7 +104,9 @@ class PacemakerAPI {
         activitiesIndex.remove(activity.id)
       }
       user.activities.clear();
+		  return true
     }
+	  return false 
   }
 	
 	fun getMessages(id: String):MutableList<Message> {

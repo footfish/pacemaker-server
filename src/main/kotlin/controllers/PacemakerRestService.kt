@@ -116,8 +116,11 @@ class PacemakerRestService  {
   
   fun deleteActivites(ctx: Context) {
     val id: String? =  ctx.param("id")
-    pacemaker.deleteActivities(id!!)
-    ctx.status(204)
+    if(pacemaker.deleteActivities(id!!)) {
+      ctx.status(204)
+    } else {
+		ctx.status(404)
+    }
   }
 	
 	 fun createLocation(ctx: Context) {
