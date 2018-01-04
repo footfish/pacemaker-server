@@ -68,8 +68,11 @@ class PacemakerRestService  {
          val id: String? =  ctx.param("id")
          val friendEmail = URLDecoder.decode(ctx.param("email"),"UTF-8")
          if (id != null && friendEmail != null) {
-           pacemaker.createFriend(id, friendEmail)
-			     ctx.status(204)
+           if (pacemaker.createFriend(id, friendEmail)) {
+             ctx.status(204)
+           } else {
+             ctx.status(404)
+           }
          } else {
 			   ctx.status(404)
          }
@@ -144,13 +147,12 @@ fun sendMessage(ctx: Context) {
 
 fun getMessages(ctx: Context) {
     val id: String? =  ctx.param("id")
-    val user = pacemaker.getUser(id!!)
-    if (user != null) {
-      ctx.json(user.messages.values)
-    } else {
+	  if (id != null) {
+	    ctx.json(pacemaker.getMessages(id))
+		} else {
       ctx.status(404)
     }
-  }
+   }
 	
 fun broadcastMessage(ctx: Context) {
     val id: String? =  ctx.param("id")

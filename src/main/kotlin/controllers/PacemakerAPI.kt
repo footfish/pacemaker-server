@@ -7,9 +7,9 @@ import models.User
 import models.Message
 
 class PacemakerAPI {
-
-  var userIndex = hashMapOf<String, User>()
-  var emailIndex = hashMapOf<String, User>()
+  val adminUser = User(firstname="power", lastname="user",email="admin@localhost",password="admin",admin=true) 
+  var userIndex = hashMapOf<String, User>(adminUser.id to adminUser)
+  var emailIndex = hashMapOf<String, User>(adminUser.email to adminUser)
   var activitiesIndex = hashMapOf<String, Activity>()
   var users = userIndex.values
     
@@ -44,13 +44,9 @@ class PacemakerAPI {
     return activitiesIndex[activityId]
   }
 
-	
-  fun getActivity(id: String): Activity? {
+	fun getActivity(id: String): Activity? {
     return activitiesIndex[id]
   }
-	
-	
-	
 	
 	fun getFriends(id:String): MutableCollection<User?>? {
 	val friendIndex = hashMapOf<String, User?>()
@@ -64,15 +60,17 @@ class PacemakerAPI {
 		}
 	}
 	
-  fun createFriend(id: String, email: String) {
+  fun createFriend(id: String, email: String): Boolean{
 			val friendUser = emailIndex[email]
 			val user = userIndex[id]
 			if (user != null && friendUser != null ) {
 				if (friendUser != user) { // can't add yourself as friend
 				  user.friend.add(friendUser.id)     //add friend 
 				  friendUser.friend.add(user.id)     //then add mutual relationship
+					return true
 				}  
-			}	
+			}
+	  return false
   }	
  	
   fun deleteFriend(id: String, email: String) {
@@ -95,16 +93,28 @@ class PacemakerAPI {
 		  return null
 	  }	
   
+	
   fun deleteActivities(id: String) {
     require(userIndex[id] != null)
     var user = userIndex.get(id)
     if (user != null) {
-      for ((u, activity) in user.activities) {
+      for ( activity in user.activities.values) {		
         activitiesIndex.remove(activity.id)
       }
       user.activities.clear();
     }
   }
+	
+	fun getMessages(id: String):MutableList<Message> {
+    var user = userIndex.get(id)
+	  val prettyMessages:MutableList<Message> = ArrayList() //Messages stores id in 'from' so we got to rebuild with email address.
+		if (user != null)	{ 
+		  for (message in user.messages.values) {
+				  prettyMessages.add(Message(message=message.message, from=userIndex.get(message.from)!!.email, id=message.id))
+		  }
+		}
+	 return prettyMessages	
+	}
 	
   fun sendMessage(id: String, email: String, message: Message) {
 			val friendUser = emailIndex[email]
