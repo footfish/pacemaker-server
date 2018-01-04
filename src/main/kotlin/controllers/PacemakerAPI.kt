@@ -13,11 +13,16 @@ class PacemakerAPI {
   var activitiesIndex = hashMapOf<String, Activity>()
   var users = userIndex.values
     
-  fun createUser(firstName: String, lastName: String, email: String, password: String): User {
-    var user = User(firstName, lastName, email, password)
-    userIndex[user.id] = user
-    emailIndex[user.email] = user
-    return user
+  fun createUser(firstName: String, lastName: String, email: String, password: String): User? {
+	  var user: User? = null 
+
+	  if (emailIndex[email] == null) {
+	      user = User(firstName, lastName, email, password)
+	      userIndex[user.id] = user
+	      emailIndex[user.email] = user
+	    }
+	  
+  return user
   }
   
   fun deleteUsers() {
