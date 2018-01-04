@@ -120,26 +120,32 @@ class PacemakerAPI {
 	 return prettyMessages	
 	}
 	
-  fun sendMessage(id: String, email: String, message: Message) {
+  fun sendMessage(id: String, email: String, message: Message): Boolean {
 			val friendUser = emailIndex[email]
 			val user = userIndex[id]
  			if (user != null && friendUser != null ) {
 			  if (user.friend.contains(friendUser.id) ) { // check they are friends 
 				    friendUser.messages[message.id]=message
+				    return true
 				}  
 			}
+	    return false 
   }
 	
-  fun broadcastMessage(id: String, message: Message) {
+  fun broadcastMessage(id: String, message: Message): Boolean {
 			val user = userIndex[id]
  			if (user != null) {
+				  var sent: Boolean = false
 				  for (i in userIndex[id]?.friend!!) {
 					   val friendUser = userIndex[i]
 					   if (friendUser != null) { //in case user was deleted 
-					   friendUser.messages[message.id]=message
+					     friendUser.messages[message.id]=message
+					     sent = true 
 					   }
 				  }
-			}	
+				  return sent
+			}
+	  return false 
   }	  	
 		  	
 }

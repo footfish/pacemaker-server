@@ -131,9 +131,12 @@ class PacemakerRestService  {
     val activity = pacemaker.getActivity(activityId!!)
 		println(activity)
     if (activity != null) {
-			println("attempt adding location pacemaker.createLocation()")
       val newActivity = pacemaker.createLocation(activity.id, location)
-      ctx.json(newActivity!!)
+		  if (newActivity != null) {
+      ctx.json(newActivity)
+			} else {
+			ctx.status(404)
+			}
     } else {
       ctx.status(404)
     }
@@ -144,8 +147,11 @@ fun sendMessage(ctx: Context) {
     val friendEmail = URLDecoder.decode(ctx.param("email"),"UTF-8")
 	  val message = ctx.bodyAsClass(Message::class.java)
     if (id != null && friendEmail != null) {
-	    pacemaker.sendMessage(id, friendEmail, message)
-		  ctx.status(204)
+	    if( pacemaker.sendMessage(id, friendEmail, message)) {
+	      ctx.status(204)			
+	    } else {
+	      ctx.status(404)
+	    }
 		} else {
       ctx.status(404)
     }
@@ -164,8 +170,11 @@ fun broadcastMessage(ctx: Context) {
     val id: String? =  ctx.param("id")
 	  val message = ctx.bodyAsClass(Message::class.java)
     if (id != null) {
-	    pacemaker.broadcastMessage(id, message)
-		  ctx.status(204)
+	    if (pacemaker.broadcastMessage(id, message)) {
+	      ctx.status(204)
+	    } else {
+	      ctx.status(404)
+	    }
 		} else {
       ctx.status(404)
     }
