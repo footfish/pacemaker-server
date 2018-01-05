@@ -10,9 +10,23 @@ import java.net.URLDecoder
 class PacemakerRestService  {
   val pacemaker = PacemakerAPI()
 
-  fun listUsers(ctx: Context) {
-    ctx.json(pacemaker.users)
-  }
+  fun getUsers(ctx: Context) {
+		val id: String? = ctx.queryParam("id") //optional 'id' filter
+		var email: String? = ctx.queryParam("email") //optional 'email' filter
+	  if (email != null) {
+		  email = URLDecoder.decode(email, "UTF-8")
+			}
+	  	  
+	  if (id == null && email == null) {
+	    ctx.json(pacemaker.users)		  
+			} else if (id != null && email == null) {
+			  ctx.json(pacemaker.users.filter { it.id == id })
+	  	} else if (id == null && email != null) {
+	   	  ctx.json(pacemaker.users.filter { it.email == email })
+	  	} else if (id != null && email != null) {
+	   	  ctx.json(pacemaker.users.filter { it.email == email && it.id == id })
+	    }
+    }
   
   fun createUser(ctx: Context) {
     val user = ctx.bodyAsClass(User::class.java)

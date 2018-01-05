@@ -17,7 +17,7 @@ private fun getHerokuAssignedPort(): Int {
 
 fun configRoutes(app: Javalin, service: PacemakerRestService) {
   app.before { ctx -> "Request: " + println(ctx.body())  } // debug
-  app.get("/users") { ctx -> service.listUsers(ctx) }
+  app.get("/users") { ctx -> service.getUsers(ctx) }
   app.post("/users") { ctx -> service.createUser(ctx) }
   app.delete("/users") { ctx -> service.deleteUsers(ctx) }
   app.get("/users/:id/activities") { ctx -> service.getActivities(ctx) }
