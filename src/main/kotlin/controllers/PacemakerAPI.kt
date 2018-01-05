@@ -29,10 +29,23 @@ class PacemakerAPI {
     userIndex.clear();
     emailIndex.clear()
   }
-  
+	
+  fun deleteUser(id: String): Boolean{
+	  var user = userIndex.get(id)
+	  if (user != null) {
+		  for (friendId in user.friend) { 		  //delete friends (mutual)
+			  userIndex[friendId]?.friend?.remove(id)
+				}
+	    userIndex.remove(user.id)
+		  emailIndex.remove(user.email)
+		  return true
+			}
+	  return false
+  }
+	
   fun getUser(id: String) = userIndex[id]
   fun getUserByEmail(email: String) = emailIndex[email]
-  
+		
   fun createActivity(id: String, type: String, location: String, distance: Float): Activity? {
     var activity:Activity? = null
     var user = userIndex.get(id)

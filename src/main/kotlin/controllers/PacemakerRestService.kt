@@ -43,6 +43,19 @@ class PacemakerRestService  {
     ctx.status(204)  //204 No Content
   }
     
+	fun deleteUser(ctx: Context) {
+    val id: String? =  ctx.param("id")
+		if (id != null) {		  
+		  if (pacemaker.deleteUser(id)){
+           ctx.status(204) //204 No Content
+         } else {
+           ctx.status(404)  //404 Not Found
+				 }
+		} else {
+      ctx.status(422) //422 Unprocessable Entity
+    }
+	}
+	
   fun getActivity(ctx: Context) {
     // val userId: String? = ctx.param("id")  //should verify user is correct here 
     val activityId: String? = ctx.param("activityId")
