@@ -11,6 +11,6 @@ data class User(
 	  var friend: MutableSet<String> = mutableSetOf(),
     val activities: MutableMap<String, Activity> = hashMapOf<String, Activity>(),
 	  val messages: MutableMap<String, Message> = hashMapOf<String, Message>(),
-	  val disabled: Boolean = false, 
-    val admin: Boolean = false
+	  var disabled: Boolean = false, 
+    var admin: Boolean = false
 	)

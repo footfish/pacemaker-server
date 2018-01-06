@@ -37,6 +37,17 @@ class PacemakerRestService  {
       ctx.status(418) //418 I'm a teapot
 			}
   }
+	
+  fun updateUser(ctx: Context) {
+    val id: String? =  ctx.param("id")
+		if (id != null) {		  
+		  val user = ctx.bodyAsClass(User::class.java)
+		      val updatedUser = pacemaker.updateUser(id, user.firstname, user.lastname, user.email, user.password, user.disabled, user.admin)
+		        ctx.json(updatedUser)
+		} else {
+      ctx.status(422) //422 Unprocessable Entity
+    }
+  }
 
   fun deleteUsers(ctx: Context) {
     pacemaker.deleteUsers()

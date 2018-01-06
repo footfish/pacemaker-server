@@ -21,6 +21,7 @@ fun configRoutes(app: Javalin, service: PacemakerRestService) {
   app.post("/users") { ctx -> service.createUser(ctx) }
   app.delete("/users") { ctx -> service.deleteUsers(ctx) }
 	app.delete("/users/:id") { ctx -> service.deleteUser(ctx) }
+	app.put("/users/:id") { ctx -> service.updateUser(ctx) }
   app.get("/users/:id/activities") { ctx -> service.getActivities(ctx) }
 	app.get("/users/:id/activities/:activityId") { ctx -> service.getActivity(ctx) }
   app.post("/users/:id/activities") { ctx -> service.createActivity(ctx) }

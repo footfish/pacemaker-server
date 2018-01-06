@@ -24,6 +24,20 @@ class PacemakerAPI {
 	  
   return user
   }
+	
+  fun updateUser(id: String, firstName: String, lastName: String, email: String, password: String, disabled: Boolean, admin: Boolean): User {
+	  var user = userIndex[id]!!  
+    
+	  user.firstname = firstName
+	  user.lastname = lastName
+	  user.email = email 
+	  user.password = password
+	  user.disabled = disabled
+	  user.admin = admin
+	  
+  return user
+  }
+	
   
   fun deleteUsers() {
     userIndex.clear();
